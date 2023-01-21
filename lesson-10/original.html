@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE DOM</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="words.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Mad Libs, Quotes, &amp; the DOM</h1>
+    </header>
+    <main>
+        <div id="mad-lib-container">
+            <p id="mad-lib">Your Mad Lib will appear here</p>
+        </div>
+        <!--comment out choices and random to begin the exercises-->
+        <div id="choices">
+            <h3>How would you like to play?</h3>
+            <div id="btns">
+                <button type="menu" class="choice" id="guess-start-btn">Guess words</button>
+                <button type="menu" class="choice" id="ran-start-btn">Random words</button>
+            </div>
+        </div>
+
+        <div class="play" id="random-play">
+            <p>Insert random words</p>
+            <button id="random" type="button">Play!</button>
+        </div>
+
+        <form class="play" id="guess-play">
+            <label for="noun-input">Noun</label>
+            <input type="text" id="noun-input" required>
+            <label for="adjective-input">Adjective</label>
+            <input type="text" id="adjective-input" required>
+            <label for="verb-input">Verb, present participle ending in -ing</label>
+            <input type="text" id="verb-input" required>
+            <label for="adverb-input">Adverb ending in -ly</label>
+            <input type="text" id="adverb-input" required>
+            <button type="submit">Play!</button>
+        </form>
+    </main>
+    <script>
+        var noun, verb, adjective, adverb;
+        let words = wordsList;
+        //Get all the elements with class play using querySelectorAll()
+        const play = document.querySelectorAll('.play');
+        //Use the forEach method to set class hide on all of them.
+        play.forEach(function (item) {
+            item.setAttribute('class', 'hide');
+        });
+
+
+        function display() {
+            let madLib = `I was busy coding a website when I heard a <span>${adjective}</span> noise. I looked outside and saw a <span>${noun}</span> <span>${adverb}</span> <span>${verb}</span> down the street.`;
+            //Get all the span tags by tagname
+
+
+
+            //Get all the p tags by tagname and store them in a variable
+            let para = document.getElementsByTagName('p');
+            /*Use the index to select the first p tag and assign it as a new value for the above variable*/
+            para = para[0];
+            //Change the content of the p tag to the madlib
+            para.innerHTML = madLib;
+
+            /*const span = document.querySelectorAll('span');
+            span.forEach(item => {
+                item.setAttribute('class','highlight');
+            });*/
+        }
+
+        function generate(evt) {
+            evt.preventDefault();
+            /*Give a value to the variables noun, verb, adjective, adverb by
+            selecting each input tag by its id, and getting its value.*/
+            noun = document.getElementById('noun-input').value;
+            verb = document.getElementById('verb-input').value;
+            adjective = document.getElementById('adjective-input').value;
+            adverb = document.getElementById('adverb-input').value;
+            //Call the display function
+            display();
+        }
+
+        let form = document.querySelector('form');
+        form.addEventListener('submit', generate);
+
+        function randomize() {
+            let maxIndex = words.length - 1;
+            let num1 = Math.round(Math.random() * maxIndex);
+            let num2 = Math.round(Math.random() * maxIndex);
+            let num3 = Math.round(Math.random() * maxIndex);
+            let num4 = Math.round(Math.random() * maxIndex);
+            //Use the index to get a random word for each of the variables, noun, verb, adjective, adverb
+            noun = words[num1];
+            adjective = words[num2];
+            verb = words[num3];
+            adverb = words[num4];
+            //Call the display function
+            display();
+        }
+
+        //query selector 
+        let randomBtn = document.querySelector('#random');
+        randomBtn.addEventListener('click', randomize);
+
+        //Get the choices div by its id
+        let choices = document.getElementById('choices');
+        //Get the random start button by its id
+        let ranStartBtn = document.getElementById('ran-start-btn');
+        function startRandom() {
+            //Change the classname of choices to hide
+            choices.className = 'hide'
+            //Get the random play div by its id
+            const random = document.getElementById('random-play');
+            //Set the class of random-play to show play
+            random.setAttribute('class', 'show play');
+        }
+        ranStartBtn.addEventListener('click', startRandom);
+
+        //Get the guess start buton by its id
+        let guessStartBtn = document.getElementById('guess-start-btn');
+
+        function startForm() {
+            //Change the classname of choices to hide
+            choices.className = 'hide'
+            //Get the form by its id
+            const guess = document.getElementById('guess-play');
+            //Set the form's class to show play
+            guess.setAttribute('class', 'show play');
+        }
+
+        guessStartBtn.addEventListener('click', startForm);
+
+
+    </script>
+</body>
+
+</html>
